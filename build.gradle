@@ -1,0 +1,69 @@
+buildscript {
+	repositories {
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath "gradle.plugin.com.arenagod.gradle:mybatis-generator-plugin:1.4"
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.1.4.RELEASE'
+	id 'java'
+}
+
+
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.bd'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// spring
+	compile('org.springframework.boot:spring-boot-starter-aop')
+	compile('org.springframework.boot:spring-boot-starter-data-rest')
+	compile('org.springframework.boot:spring-boot-starter-validation')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1')
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// 数据库连接池
+	compile('com.alibaba:druid-spring-boot-starter:1.1.16')
+	
+	// io 包
+	compile('commons-io:commons-io:2.6')
+	
+	// phoenix
+	compile('org.apache.phoenix:phoenix-core:4.14.1-HBase-1.4') {
+		// 排除这三个包，跟 spring 包有冲突
+		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+		exclude group: 'tomcat', module: 'jasper-runtime'
+		exclude group: 'log4j', module: 'log4j'
+	}
+
+	compile('io.springfox:springfox-swagger2:2.0.1')
+	compile('io.springfox:springfox-swagger-ui:2.0.1')
+
+	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+	compile group: 'log4j', name: 'log4j', version: '1.2.17'
+	compile group: 'com.google.guava', name: 'guava', version: '16.0'
+}
+
+apply plugin: "com.arenagod.gradle.MybatisGenerator"
+
+configurations {
+	mybatisGenerator
+}
+
+mybatisGenerator {
+	verbose = true
+	configFile = 'src/main/resources/generator.xml'
+}

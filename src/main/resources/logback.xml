@@ -1,0 +1,123 @@
+<configuration>
+
+    <!-- 控制台打印彩色日志格式 -->
+    <property name="CONSOLE_COLOR_LOG_PATTERN" value="%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS})  %highlight(%-5level) [%thread]  %boldGreen(%logger{50})  %boldCyan(%msg%n)" />
+    <!-- 日志文件输出的日志格式 -->
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}  %-5level [%thread]  %logger{50}  %msg%n" />
+
+    <!-- 日志路径 -->
+    <property name="LOGGING_PATH" value="/Users/zhangbo/Desktop/flink_loggers" />
+    <!-- 每个日志文件多大 -->
+    <property name="MAX_FILE_SIZE" value="5MB" />
+    <!-- 日志文件保存多少天 -->
+    <property name="MAX_HISTORY" value="30" />
+    <!-- 最大可以存多大的日志文件 -->
+    <property name="TOTAL_SIZE_CAP" value="1GB" />
+
+    <!-- 控制台日志输出，输出 info 及以上级别的日志 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${CONSOLE_COLOR_LOG_PATTERN}</Pattern>
+        </encoder>
+        <!-- 临界值过滤器，只打印该级别以上的日志 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+    </appender>
+
+    <!-- 只输出 info 级别的日志 -->
+    <appender name="FLINK_TEST_CBH_INFO_LOGGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 如果有新日志进来后，在旧日志后面加上 -->
+        <append>true</append>
+        <!-- 匹配日志准确相等的日志过滤器，只打印该级别日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+            <!-- 只打印 info 级别 -->
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>
+            ${LOGGING_PATH}/flink_test/info/flink_test_info_logger.log
+        </file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 按天滚动 -->
+            <FileNamePattern>${LOGGING_PATH}/flink_test/info/flink_test_info_logger.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <!-- 每个日志文件按天与大小分割，每个文件多大，保留多少天，最大存多大 -->
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 只输出 error 的错误日志 -->
+    <appender name="FLINK_TEST_CBH_ERROR_LOGGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 如果有新日志进来后，在旧日志后面加上 -->
+        <append>true</append>
+        <!-- 匹配日志准确相等的日志过滤器，只打印该级别日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <!-- 只打印 error 级别 -->
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>
+            ${LOGGING_PATH}/flink_test/error/flink_test_error_logger.log
+        </file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 按天滚动 -->
+            <FileNamePattern>${LOGGING_PATH}/flink_test/error/flink_test_error_logger.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <!-- 每个日志文件按天与大小分割，每个文件多大，保留多少天，最大存多大 -->
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FLINK_TEST_CBH_WARN_LOGGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 如果有新日志进来后，在旧日志后面加上 -->
+        <append>true</append>
+        <!-- 匹配日志准确相等的日志过滤器，只打印该级别日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>warn</level>
+            <!-- 只打印 warn 级别 -->
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>
+            ${LOGGING_PATH}/flink_test/warn/flink_test_warn_logger.log
+        </file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 按天滚动 -->
+            <FileNamePattern>${LOGGING_PATH}/flink_test/warn/flink_test_warn_logger.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <!-- 每个日志文件按天与大小分割，每个文件多大，保留多少天，最大存多大 -->
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="FLINK_TEST_CBH_INFO_LOGGER"/>
+    </root>
+    <root level="error">
+        <appender-ref ref="FLINK_TEST_CBH_ERROR_LOGGER"/>
+    </root>
+    <root level="warn">
+        <appender-ref ref="FLINK_TEST_CBH_WARN_LOGGER"/>
+    </root>
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

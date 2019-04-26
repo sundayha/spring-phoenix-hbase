@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bd.springphoenixhbase.pic.mapper.svd_pic.PicMapper">
+  <resultMap id="BaseResultMap" type="com.bd.springphoenixhbase.pic.model.svd_pic.Pic">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bd.springphoenixhbase.pic.model.svd_pic.Pic">
+    <result column="FILE" jdbcType="VARBINARY" property="file" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID
+  </sql>
+  <sql id="Blob_Column_List">
+    FILE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from SVD_PIC.PIC
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SVD_PIC.PIC
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bd.springphoenixhbase.pic.model.svd_pic.Pic">
+    UPSERT into SVD_PIC.PIC (ID, FILE)
+    values (#{id,jdbcType=VARCHAR}, #{file,jdbcType=VARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bd.springphoenixhbase.pic.model.svd_pic.Pic">
+    UPSERT into SVD_PIC.PIC
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="file != null">
+        FILE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="file != null">
+        #{file,jdbcType=VARBINARY},
+      </if>
+    </trim>
+  </insert>
+
+
+  <select id="selectAll" resultType="com.bd.springphoenixhbase.pic.model.svd_pic.Pic">
+    select id id, FILE file from PIC
+  </select>
+</mapper>
